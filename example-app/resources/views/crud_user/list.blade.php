@@ -9,6 +9,8 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
+                            <th>Phone</th>
+                            <th>Address</th>
                             <th>Email</th>
                             <th>Action</th>
                         </tr>
@@ -18,6 +20,8 @@
                             <tr>
                                 <th>{{ $user->id }}</th>
                                 <th>{{ $user->name }}</th>
+                                <th>{{ $user->phone }}</th>
+                                <th>{{ $user->address }}</th>
                                 <th>{{ $user->email }}</th>
                                 <th>
                                     <a href="{{ route('user.readUser', ['id' => $user->id]) }}">View</a> |
