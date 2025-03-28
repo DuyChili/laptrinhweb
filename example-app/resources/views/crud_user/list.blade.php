@@ -12,6 +12,8 @@
                             <th>Phone</th>
                             <th>Address</th>
                             <th>Email</th>
+                            <th>Create_at</th>
+                            <th>Updated_at</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -21,8 +23,10 @@
                                 <th>{{ $user->id }}</th>
                                 <th>{{ $user->name }}</th>
                                 <th>{{ $user->phone }}</th>
-                                <th>{{ $user->address }}</th>
+                                <th>{{ $user->address }}</th>   
                                 <th>{{ $user->email }}</th>
+                                <th>{{ $user->created_at }}</th>
+                                <th>{{ $user->updated_at }}</th>
                                 <th>
                                     <a href="{{ route('user.readUser', ['id' => $user->id]) }}">View</a> |
                                     <a href="{{ route('user.updateUser', ['id' => $user->id]) }}">Edit</a> |
