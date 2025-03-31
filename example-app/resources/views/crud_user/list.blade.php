@@ -2,31 +2,23 @@
 
 @section('content')
     <main class="login-form">
-        <div class="container">
-            <div class="row justify-content-center">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Phone</th>
-                            <th>Address</th>
-                            <th>Email</th>
-                            <th>Create_at</th>
-                            <th>Updated_at</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($users as $user)
+    <div class="container mt-5 content">
+        <h3 class="text-center">Danh Sách Người Dùng</h3>
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th style="display:none; ">ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Thao Tác</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach($users as $user)
                             <tr>
-                                <th>{{ $user->id }}</th>
-                                <th>{{ $user->name }}</th>
-                                <th>{{ $user->phone }}</th>
-                                <th>{{ $user->address }}</th>   
+                                <th style="display:none; ">{{ $user->id }}</th>
+                                <th>{{ $user->username }}</th>
                                 <th>{{ $user->email }}</th>
-                                <th>{{ $user->created_at }}</th>
-                                <th>{{ $user->updated_at }}</th>
                                 <th>
                                     <a href="{{ route('user.readUser', ['id' => $user->id]) }}">View</a> |
                                     <a href="{{ route('user.updateUser', ['id' => $user->id]) }}">Edit</a> |
@@ -34,9 +26,10 @@
                                 </th>
                             </tr>
                         @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
+            </tbody>
+        </table>
+    </div>
+
+      
     </main>
 @endsection
