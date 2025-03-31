@@ -26,19 +26,18 @@ class CrudUserController extends Controller
     public function authUser(Request $request)
     {
         $request->validate([
-            'email' => 'required',
+            'username' => 'required',
             'password' => 'required',
         ]);
-
-        $credentials = $request->only('email', 'password');
-
+    
+        $credentials = $request->only('username', 'password');
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('list')
-                ->withSuccess('Signed in');
+         
+            return redirect()->intended('list')->withSuccess('Signed in');
         }
-
-        return redirect("login")->withSuccess('Login details are not valid');
+    
     }
+    
 
     /**
      * Registration page
@@ -54,21 +53,18 @@ class CrudUserController extends Controller
     public function postUser(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'username' => 'required|unique:users',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
+            'password' => 'required|min:6|confirmed',
         ]);
 
-        $data = $request->all();
-        $check = User::create([
-            'name' => $data['name'],
-            'phone' => $data['phone'],
-            'address' => $data['address'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password'])
+        $user = User::create([
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
         ]);
 
-        return redirect("login");
+        return redirect("login")->withSuccess('Tạo tài khoản thành công! Vui lòng đăng nhập.');
     }
 
     /**
@@ -110,17 +106,19 @@ class CrudUserController extends Controller
         $input = $request->all();
 
         $request->validate([
-            'name' => 'required',
+            'username' => 'required',
             'email' => 'required|email|unique:users,id,'.$input['id'],
-            'password' => 'required|min:6',
+            'password' => 'required|min:6|confirmed',
         ]);
 
        $user = User::find($input['id']);
-       $user->name = $input['name'];
-       $user->phone = $input['phone'];
-       $user->address = $input['address'];
-       $user->email = $input['email'];
-       $user->password = $input['password'];
+       $user->username = $request->username;
+       $user->email = $request->email;
+       
+       if (!empty($request->password)) {
+           $user->password = Hash::make($request->password);
+       }
+   
        $user->save();
 
         return redirect("list")->withSuccess('You have signed-in');

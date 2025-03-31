@@ -1,64 +1,58 @@
 @extends('dashboard')
 
 @section('content')
-    <main class="signup-form">
-        <div class="cotainer">
-            <div class="row justify-content-center">
-                <div class="col-md-4">
-                    <div class="card">
-                        <h3 class="card-header text-center">Update User</h3>
-                        <div class="card-body">
-                            <form action="{{ route('user.postUpdateUser') }}" method="POST">
-                                @csrf
-                                <input name="id" type="hidden" value="{{$user->id}}">
-                                <div class="form-group mb-3">
-                                    <input type="text" placeholder="Name" id="name" class="form-control" name="name"
-                                           value="{{ $user->name }}"
-                                           required autofocus>
-                                    @if ($errors->has('name'))
-                                        <span class="text-danger">{{ $errors->first('name') }}</span>
-                                    @endif
-                                </div>
-                                <div class="form-group mb-3">
-                                    <input type="text" placeholder="Phone" id="phone" class="form-control" name="phone"
-                                           value="{{ $user->phone }}"
-                                           required autofocus>
-                                    @if ($errors->has('phone'))
-                                        <span class="text-danger">{{ $errors->first('phone') }}</span>
-                                    @endif
-                                </div>
-                                <div class="form-group mb-3">
-                                    <input type="text" placeholder="Address" id="address" class="form-control" name="address"
-                                           value="{{ $user->address }}"
-                                           required autofocus>
-                                    @if ($errors->has('address'))
-                                        <span class="text-danger">{{ $errors->first('address') }}</span>
-                                    @endif
-                                </div>
-                                <div class="form-group mb-3">
-                                    <input type="text" placeholder="Email" id="email_address" class="form-control"
-                                           value="{{ $user->email }}"
-                                           name="email" required autofocus>
-                                    @if ($errors->has('email'))
-                                        <span class="text-danger">{{ $errors->first('email') }}</span>
-                                    @endif
-                                </div>
-                                <div class="form-group mb-3">
-                                    <input type="password" placeholder="Password" id="password" class="form-control"
-                                           name="password" required>
-                                    @if ($errors->has('password'))
-                                        <span class="text-danger">{{ $errors->first('password') }}</span>
-                                    @endif
-                                </div>
+<main class="signup-form">
+    <div class="container mt-5 content">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="text-center">Cập Nhật Tài Khoản</h3>
+                        <form action="{{ route('user.postUpdateUser') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $user->id }}">
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-control" name="username" value="{{ $user->username }}" required>
+                                @error('username')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
 
-                                <div class="d-grid mx-auto">
-                                    <button type="submit" class="btn btn-dark btn-block">Update</button>
-                                </div>
-                            </form>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="email" value="{{ $user->email }}" required>
+                                @error('email')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Mật Khẩu</label>
+                                <input type="password" class="form-control" name="password">
+                                @error('password')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Nhập lại Mật Khẩu</label>
+                                <input type="password" class="form-control" name="password_confirmation">
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                            </div>
+                        </form>
+
+                        <div class="text-center mt-3">
+                            <a href="{{ route('user.list') }}">Quay lại danh sách</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 @endsection
