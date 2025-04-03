@@ -19,6 +19,27 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+                            <div class="mb-3">
+                                <label class="form-label">Age</label>
+                                <input type="text" class="form-control" name="age" value="{{ $user->age }}" required>
+                                @error('age')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Github</label>
+                                <input type="text" class="form-control" name="github" value="{{ $user->github }}" required>
+                                @error('github')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-control" name="username" value="{{ $user->username }}" required>
+                                @error('username')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Email</label>

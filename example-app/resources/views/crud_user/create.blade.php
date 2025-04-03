@@ -17,6 +17,20 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+                            <div class="mb-3">
+                                <label class="form-label">Age</label>
+                                <input type="text" class="form-control" name="age" required autofocus>
+                                @error('age')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Github</label>
+                                <input type="text" class="form-control" name="github" required autofocus>
+                                @error('github')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Email</label>
