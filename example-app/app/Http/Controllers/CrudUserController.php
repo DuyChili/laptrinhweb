@@ -137,12 +137,22 @@ class CrudUserController extends Controller
         $user->email = $request->email;
         
         // Nếu có ảnh, xử lý lưu ảnh
-        if ($request->hasFile('img')) {
-            $image = $request->file('img');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $imagePath = $image->storeAs('images', $imageName, 'public'); // Lưu ảnh vào thư mục public/images
-            $user->img = $imagePath; // Lưu đường dẫn ảnh vào DB
+    if ($request->hasFile('img')) {
+        // Nếu người dùng đã có ảnh cũ, xóa nó
+        if ($user->img) {
+            // Xóa ảnh cũ khỏi storage
+            $oldImagePath = storage_path('app/public/' . $user->img);
+            if (file_exists($oldImagePath)) {
+                unlink($oldImagePath); // Xóa ảnh cũ
+            }
         }
+
+        // Lưu ảnh mới
+        $image = $request->file('img');
+        $imageName = time() . '_' . $image->getClientOriginalName();
+        $imagePath = $image->storeAs('images', $imageName, 'public'); // Lưu ảnh vào thư mục public/images
+        $user->img = $imagePath; // Lưu đường dẫn ảnh vào DB
+    }
         
         // Nếu có mật khẩu mới, cập nhật mật khẩu
         if (!empty($request->password)) {
