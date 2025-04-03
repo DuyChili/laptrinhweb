@@ -8,10 +8,31 @@
                 <div class="card">
                     <div class="card-body">
                         <h3 class="text-center">Cập Nhật Tài Khoản</h3>
-                        <form action="{{ route('user.postUpdateUser') }}" method="POST">
+                        <form action="{{ route('user.postUpdateUser') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="id" value="{{ $user->id }}">
                             
+                            <div class="mb-3">
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-control" name="username" value="{{ $user->username }}" required>
+                                @error('username')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Age</label>
+                                <input type="text" class="form-control" name="age" value="{{ $user->age }}" required>
+                                @error('age')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Github</label>
+                                <input type="text" class="form-control" name="github" value="{{ $user->github }}" required>
+                                @error('github')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
                             <div class="mb-3">
                                 <label class="form-label">Username</label>
                                 <input type="text" class="form-control" name="username" value="{{ $user->username }}" required>
@@ -39,6 +60,14 @@
                             <div class="mb-3">
                                 <label class="form-label">Nhập lại Mật Khẩu</label>
                                 <input type="password" class="form-control" name="password_confirmation">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Ảnh đại diện</label>
+                                <input type="file" class="form-control" name="img" accept="image/*">
+                                @error('img')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <div class="d-grid">
