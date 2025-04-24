@@ -26,11 +26,11 @@ class CrudUserController extends Controller
     public function authUser(Request $request)
     {
         $request->validate([
-            'username' => 'required',
+            'name' => 'required',
             'password' => 'required',
         ]);
     
-        $credentials = $request->only('username', 'password');
+        $credentials = $request->only('name', 'password');
         if (Auth::attempt($credentials)) {
          
             return redirect()->intended('list')->withSuccess('Signed in');
@@ -53,13 +53,13 @@ class CrudUserController extends Controller
     public function postUser(Request $request)
     {
         $request->validate([
-            'username' => 'required|unique:users',
+            'name' => 'required|unique:users',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
         ]);
 
         $user = User::create([
-            'username' => $request->username,
+            'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password)
         ]);
@@ -106,7 +106,7 @@ class CrudUserController extends Controller
         $input = $request->all();
 
         $request->validate([
-            'username' => 'required',
+            'name' => 'required',
             'email' => 'required|email|unique:users,id,'.$input['id'],
             'password' => 'required|min:6|confirmed',
         ]);
@@ -130,7 +130,7 @@ class CrudUserController extends Controller
     public function listUser()
     {
         if(Auth::check()){
-            $users = User::all();
+            $users = User::paginate(10);
             return view('crud_user.list', ['users' => $users]);
         }
 
