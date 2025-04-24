@@ -10,6 +10,7 @@
                     <th style="display:none; ">ID</th>
                     <th>Username</th>
                     <th>Email</th>
+                    <th>Role</th>
                     <th>Thao Tác</th>
                 </tr>
             </thead>
@@ -17,8 +18,15 @@
             @foreach($users as $user)
                             <tr>
                                 <th style="display:none; ">{{ $user->id }}</th>
-                                <th>{{ $user->username }}</th>
+                                <th>{{ $user->name }}</th>
                                 <th>{{ $user->email }}</th>
+                                <th>
+                                    @foreach($user->roles as $role)
+                                        <a href="{{ route('user.role', ['id' => $role->id]) }}">
+                                            {{ $role->name . '-' }}
+                                        </a>
+                                    @endforeach
+                                </th>
                                 <th>
                                     <a href="{{ route('user.readUser', ['id' => $user->id]) }}">View</a> |
                                     <a href="{{ route('user.updateUser', ['id' => $user->id]) }}">Edit</a> |
@@ -28,6 +36,7 @@
                         @endforeach
             </tbody>
         </table>
+        {!! $users->withQueryString()->links('pagination::bootstrap-5') !!}
     </div>
 
       

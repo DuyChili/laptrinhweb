@@ -12,8 +12,8 @@
                             @csrf
                             <div class="mb-3">
                                 <label class="form-label">Username</label>
-                                <input type="text" class="form-control" name="username" required autofocus>
-                                @error('username')
+                                <input type="text" class="form-control" name="name" required autofocus>
+                                @error('name')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
