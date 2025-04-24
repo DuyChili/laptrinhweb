@@ -26,11 +26,11 @@ class CrudUserController extends Controller
     public function authUser(Request $request)
     {
         $request->validate([
-            'username' => 'required',
+            'name' => 'required',
             'password' => 'required',
         ]);
     
-        $credentials = $request->only('username', 'password');
+        $credentials = $request->only('name', 'password');
         if (Auth::attempt($credentials)) {
          
             return redirect()->intended('list')->withSuccess('Signed in');
@@ -53,36 +53,19 @@ class CrudUserController extends Controller
     public function postUser(Request $request)
     {
         $request->validate([
-            'username' => 'required|unique:users',
-            'age' => 'required|integer|min:1',
-            'github' => 'required|url',
+            'name' => 'required|unique:users',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
-            'img' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',  // Kiểm tra ảnh
         ]);
-    
-        // Xử lý upload ảnh
-        if ($request->hasFile('img') && $request->file('img')->isValid()) {  // Kiểm tra ảnh có hợp lệ không
-            $image = $request->file('img');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $imagePath = $image->storeAs('images', $imageName, 'public');  // Lưu vào storage/app/public/images
-        } else {
-            $imagePath = null;  // Nếu không có ảnh, giá trị sẽ là null
-        }
-    
-        // Tạo user mới
+
         $user = User::create([
-            'username' => $request->username,
-            'age' => $request->age,
-            'github' => $request->github,
+            'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'img' => $imagePath,  // Lưu đường dẫn ảnh vào DB
+            'password' => Hash::make($request->password)
         ]);
-    
+
         return redirect("login")->withSuccess('Tạo tài khoản thành công! Vui lòng đăng nhập.');
     }
-    
 
     /**
      * View user detail page
@@ -120,51 +103,26 @@ class CrudUserController extends Controller
      */
     public function postUpdateUser(Request $request)
     {
-        // Xử lý logic cập nhật người dùng
         $input = $request->all();
 
         $request->validate([
-            'username' => 'required',
+            'name' => 'required',
             'email' => 'required|email|unique:users,id,'.$input['id'],
             'password' => 'required|min:6|confirmed',
-            'img' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048', // Validation cho ảnh
         ]);
 
-        $user = User::find($input['id']);
-        $user->username = $request->username;
-        $user->age = $request->age;
-        $user->github = $request->github;
-        $user->email = $request->email;
-        
-        // Nếu có ảnh, xử lý lưu ảnh
-    if ($request->hasFile('img')) {
-        // Nếu người dùng đã có ảnh cũ, xóa nó
-        if ($user->img) {
-            // Xóa ảnh cũ khỏi storage
-            $oldImagePath = storage_path('app/public/' . $user->img);
-            if (file_exists($oldImagePath)) {
-                unlink($oldImagePath); // Xóa ảnh cũ
-            }
-        }
+       $user = User::find($input['id']);
+       $user->username = $request->username;
+       $user->email = $request->email;
+       
+       if (!empty($request->password)) {
+           $user->password = Hash::make($request->password);
+       }
+   
+       $user->save();
 
-        // Lưu ảnh mới
-        $image = $request->file('img');
-        $imageName = time() . '_' . $image->getClientOriginalName();
-        $imagePath = $image->storeAs('images', $imageName, 'public'); // Lưu ảnh vào thư mục public/images
-        $user->img = $imagePath; // Lưu đường dẫn ảnh vào DB
+        return redirect("list")->withSuccess('You have signed-in');
     }
-        
-        // Nếu có mật khẩu mới, cập nhật mật khẩu
-        if (!empty($request->password)) {
-            $user->password = Hash::make($request->password);
-        }
-
-        $user->save();
-
-         return redirect("list")->withSuccess('Cập nhật thành công');
-
-    }
-    
 
     /**
      * List of users
@@ -172,7 +130,7 @@ class CrudUserController extends Controller
     public function listUser()
     {
         if(Auth::check()){
-            $users = User::all();
+            $users = User::paginate(10);
             return view('crud_user.list', ['users' => $users]);
         }
 

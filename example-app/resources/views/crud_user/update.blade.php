@@ -14,8 +14,8 @@
                             
                             <div class="mb-3">
                                 <label class="form-label">Username</label>
-                                <input type="text" class="form-control" name="username" value="{{ $user->username }}" required>
-                                @error('username')
+                                <input type="text" class="form-control" name="name" value="{{ $user->name }}" required>
+                                @error('name')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
